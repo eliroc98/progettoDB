@@ -29,9 +29,9 @@ function insert_scuola(){
         $result = pg_query($con, $query);
         if($result==TRUE)
         {
-            echo "window.alert('Inserimento scuola avvenuto con successo')";
+            echo "<div>Inserimento scuola avvenuto con successo</div>";
         }
-        else echo "window.alert('Inserimento scuola fallito')";
+        else echo "<div>'Inserimento scuola fallito</div>";
     }
 }
 insert_scuola();

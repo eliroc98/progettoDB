@@ -29,8 +29,9 @@ while($scuola = pg_fetch_assoc($query_res)){
     echo '<td>'.$anno.'</td>';
     echo '</tr>';
 }
+echo '</table>'
 ?>
-<form action="insert_personale1.php" method="POST">
+<form action="insert_scuola1.php" method="POST">
   <table>
     <tr>
         <td>Codice</td>
