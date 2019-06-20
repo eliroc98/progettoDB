@@ -18,7 +18,7 @@ function insert_scuola(){
         $check_result2 = pg_query($con,$check_query2);
         if(!$check_result1)
         {
-            echo "Errore: ".pg_last_error($con);
+            echo "Errore: ".pg_last_error($con)."<br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
             exit;
         }
         if(!$check_result2)
@@ -27,29 +27,55 @@ function insert_scuola(){
             exit;
         }
 
+        if($media&&!isset($_POST['anno'])){
+            echo "Errore: inserire anno di fondazione<br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
+            exit;
+        }
+
         $query = "INSERT INTO Scuola VALUES('$codice','$nome','$indirizzo','$anno')";
         $result = pg_query($con, $query);
         if($result==TRUE)
         {
+            if($infanzia)
+            {
+                $codR=isset($_POST['codR'])?$_POST['codR']:NULL;
+                $annoR=isset($_POST['annoR'])?$_POST['annoR']:NULL;
+                $tipoR=isset($_POST['tipoR'])?$_POST['tipoR']:NULL;
+                $check_query3="SELECT * FROM Ristrutturazione WHERE codice = '$codR'";
+                $check_result3 = pg_query($con,$check_query3);
+                if(!$check_result3)
+                {
+                    echo "Errore: ".pg_last_error($con)."<br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
+                    exit;
+                }
+                $queryR="INSERT INTO Ristrutturazione VALUES('$codR','$codice','$annoR','$tipoR')";
+                $resultR = pg_query($con, $queryR);
+                if($resultR=FALSE)
+                {
+                    echo "Errore: ".pg_last_error($con)."<br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
+                    exit;
+                }
+            }
+            if($infanzia)
+            {
+                $query1 = "INSERT INTO TipoOspitato VALUES('$codice','1')";
+                pg_query($con,$query1);
+            }
+            if($elementare)
+            {
+                $query1 = "INSERT INTO TipoOspitato VALUES('$codice','2')";
+                pg_query($con,$query1);
+            }
+            if($media)
+            {
+                $query1 = "INSERT INTO TipoOspitato VALUES('$codice','3')";
+                pg_query($con,$query1);
+            }
             echo "<div>Inserimento scuola avvenuto con successo</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
         }
         else echo "<div>'Inserimento scuola fallito</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
 
-        if($infanzia)
-        {
-            $query1 = "INSERT INTO TipoOspitato VALUES('$codice','1')";
-            pg_query($con,$query1);
-        }
-        if($elementare)
-        {
-            $query1 = "INSERT INTO TipoOspitato VALUES('$codice','2')";
-            pg_query($con,$query1);
-        }
-        if($media)
-        {
-            $query1 = "INSERT INTO TipoOspitato VALUES('$codice','3')";
-            pg_query($con,$query1);
-        }
+        
         
     }
 }

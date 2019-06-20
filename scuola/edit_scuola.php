@@ -30,6 +30,23 @@ while ($tipo = pg_fetch_assoc($query_res1)){
     if($tipo["tipo"]=='2') $elementare='checked';
     if($tipo["tipo"]=='3') $media ='checked';
 }
+$cr=null;
+$ca=null;
+$ct=null;
+if($infanzia=="checked"){
+    $queryR = "SELECT * FROM Ristrutturazione WHERE scuola='$cod' ORDER BY anno DESC LIMIT 1";
+    $query_resR = pg_query($con,$queryR);
+    if(!$query_resR){
+        echo "Errore: ".pg_last_error($con);
+        exit;
+    }
+    $ristrutturazione = pg_fetch_assoc($query_resR);
+    $cr=$ristrutturazione["codice"];
+    $ca=$ristrutturazione["anno"];
+    $ct=$ristrutturazione["tipo"];
+    
+}
+
 
 
 echo'
@@ -48,15 +65,28 @@ echo'
         <td><input type="text" name="indirizzo" value="'.$indirizzo.'" title="Inserire indirizzo scuola" size="50" required></td>
     </tr>
     <tr>
-        <td>Anno fondazione</td>
-        <td><input type="number" name="anno" min="1900" max="2019" value="'.$anno.'" title="Inserire anno fondazione scuola" ></td>
-    </tr>
-    <tr>
         <td>Tipi ospitati</td>
         <table>
-            <tr><td><input type="checkbox" name="infanzia" title="Infanzia" '.$infanzia.' />Infanzia</td></tr>
-            <tr><td><input type="checkbox" name="elementare" title="Elementare" '.$elementare.' />Elementare</td></tr>
-            <tr><td><input type="checkbox" name="media" title="Media" '.$media.' />Media</td></tr>
+            <tr><td><input type="checkbox" name="infanzia" id="infanzia" title="Infanzia" onClick="toggle(\'infanzia\', \'ristrutturazione\')"'.$infanzia.' />Infanzia</td></tr>
+            <tr><td><input type="checkbox" name="elementare" title="Elementare"'.$elementare.' />Elementare</td></tr>
+            <tr><td><input type="checkbox" id="media" name="media" title="Media" onClick="toggle(\'media\', \'anno\')"'.$media.' />Media</td></tr>
+        </table>
+    </tr>
+    <tr>
+        <td>Anno fondazione</td>
+        <td><input type="number" name="anno" id="anno" class="anno" min="1900" max="2019" title="Inserire anno fondazione scuola" disabled="true" value="'.$anno.'"></td>
+    </tr>
+    <tr>
+        
+        <table>
+        <tr><td>Ultima ristrutturazione</td></tr>
+            <tr>
+            <td>Codice</td>
+            <td><input type="text" name="codR" title="Inserire codice ultima ristrutturazione" class="ristrutturazione" disabled="true" value="'.$cr.'"></td></tr>
+            <tr><td>Anno</td>
+            <td><input type="number" name="annoR" title="Inserire anno dell\'ultima ristrutturazione" class="ristrutturazione" disabled="true" value="'.$ca.'"></td></tr>
+            <tr><td>Tipo</td>
+            <td><input type="text" name="tipoR" title="Inserire tipo dell\'ultima ristrutturazione" class="ristrutturazione" disabled="true" value="'.$ct.'"></td></tr>
         </table>
     </tr>
     <tr>
@@ -68,3 +98,15 @@ echo'
 '
 
 ?>
+<script>
+function toggle(checkboxID, toggleID) {
+     var checkbox = document.getElementById(checkboxID);
+     var toggle = document.getElementsByClassName(toggleID);
+     var i;
+    for (i = 0; i < toggle.length; i++) {
+        updateToggle = checkbox.checked ? toggle[i].disabled=false : toggle[i].disabled=true;
+    }
+}
+toggle('infanzia','ristrutturazione');
+toggle('media','anno');
+</script>
