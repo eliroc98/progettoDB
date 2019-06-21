@@ -123,4 +123,4 @@ function edit_scuola(){
     }
 }
 edit_scuola();
-?>
+?
