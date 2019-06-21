@@ -1,1 +1,0 @@
-Sistemata la qualità del codice di modifica e inserimento, con la concatenazione delle query e un'unica pg_query per il controllo finale della correttezza di tutte quelle concatenate. (è così possibile annullare tutti gli effetti delle query precedenti se qualcosa è andato storto)
