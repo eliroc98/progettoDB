@@ -45,7 +45,6 @@ function edit_scuola(){
                 $tipoR=isset($_POST['tipoR'])?$_POST['tipoR']:NULL;
                 $check_query3="SELECT * FROM Ristrutturazione WHERE codice = '$codR'";
                 $check_result3 = pg_query($con,$check_query3);
-                echo  $check_result3;
                 if(!$check_result3){
                     echo "Errore: ".pg_last_error($conn);
                     exit;
@@ -53,7 +52,6 @@ function edit_scuola(){
                 if(pg_num_rows($check_result3)==0)
                     {
                         $queryR="INSERT INTO Ristrutturazione VALUES('$codR','$codice','$annoR','$tipoR')";
-                        echo 'insert';
                         $resultR = pg_query($con, $queryR);
                         if($resultR=FALSE)
                         {
@@ -63,7 +61,6 @@ function edit_scuola(){
                     }
                 else{
                         $queryR="UPDATE Ristrutturazione SET scuola='$codice',anno='$annoR',tipo='$tipoR' WHERE codice='$codR'";
-                        echo 'update';
                         $resultR = pg_query($con, $queryR);
                         if($resultR=FALSE)
                         {
