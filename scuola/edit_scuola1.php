@@ -20,103 +20,90 @@ function edit_scuola(){
             exit;
         }
 
-
-        $query = "UPDATE Scuola SET nome = '$nome', indirizzo='$indirizzo', annofondazione = '$anno' WHERE codice = '$codice'";
-        $result = pg_query($con, $query);
-        if($result==TRUE)
-        {
-            $query1 = "SELECT tipo_scuola AS tipo FROM TipoOspitato  WHERE scuola = '$codice' ";
-            $query_res1 = pg_query($con,$query1);
-            if(!$query_res1){
+        #VERIFICA DEI TIPI DI SCUOLA GIA OSPITATI 
+        $query1 = "SELECT tipo_scuola AS tipo FROM TipoOspitato  WHERE scuola = '$codice' ";
+        $query_res1 = pg_query($con,$query1);
+        if(!$query_res1){
+            echo "Errore: ".pg_last_error($conn);
+            exit;
+        }
+        $infanzia1 = FALSE;
+        $elementare1 = FALSE;
+        $media1 = FALSE;
+        while ($tipo = pg_fetch_assoc($query_res1)){
+            if($tipo["tipo"]=='1') $infanzia1=TRUE;
+            if($tipo["tipo"]=='2') $elementare1=TRUE;
+            if($tipo["tipo"]=='3') $media1 =TRUE;
+        }
+        #GESTIONE DELLA RISTRUTTURAZIONE
+        $query=null;
+        if($infanzia){
+            $codR=isset($_POST['codR'])?$_POST['codR']:NULL;
+            $annoR=isset($_POST['annoR'])?$_POST['annoR']:NULL;
+            $tipoR=isset($_POST['tipoR'])?$_POST['tipoR']:NULL;
+            $check_query3="SELECT * FROM Ristrutturazione WHERE codice = '$codR'";
+            $check_result3 = pg_query($con,$check_query3);
+            if(!$check_result3){
                 echo "Errore: ".pg_last_error($conn);
                 exit;
             }
-            $infanzia1 = FALSE;
-            $elementare1 = FALSE;
-            $media1 = FALSE;
-            while ($tipo = pg_fetch_assoc($query_res1)){
-                if($tipo["tipo"]=='1') $infanzia1=TRUE;
-                if($tipo["tipo"]=='2') $elementare1=TRUE;
-                if($tipo["tipo"]=='3') $media1 =TRUE;
+            if(pg_num_rows($check_result3)==0)
+            {
+                $query.="INSERT INTO Ristrutturazione VALUES('$codR','$codice','$annoR','$tipoR');";
             }
-            if($infanzia){
-                $codR=isset($_POST['codR'])?$_POST['codR']:NULL;
-                $annoR=isset($_POST['annoR'])?$_POST['annoR']:NULL;
-                $tipoR=isset($_POST['tipoR'])?$_POST['tipoR']:NULL;
-                $check_query3="SELECT * FROM Ristrutturazione WHERE codice = '$codR'";
-                $check_result3 = pg_query($con,$check_query3);
-                if(!$check_result3){
-                    echo "Errore: ".pg_last_error($conn);
-                    exit;
-                    }
-                if(pg_num_rows($check_result3)==0)
-                    {
-                        $queryR="INSERT INTO Ristrutturazione VALUES('$codR','$codice','$annoR','$tipoR')";
-                        $resultR = pg_query($con, $queryR);
-                        if($resultR=FALSE)
-                        {
-                            echo "Errore: ".pg_last_error($con)."<br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
-                            exit;
-                        }
-                    }
-                else{
-                        $queryR="UPDATE Ristrutturazione SET scuola='$codice',anno='$annoR',tipo='$tipoR' WHERE codice='$codR'";
-                        $resultR = pg_query($con, $queryR);
-                        if($resultR=FALSE)
-                        {
-                            echo "Errore: ".pg_last_error($con)."<br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
-                            exit;
-                        }
-                    }
-                if($infanzia1==FALSE)
-                {
-                    $query1 = "INSERT INTO TipoOspitato VALUES('$codice','1')";
-                    pg_query($con,$query1);
-                    
-                }
+            else
+            {
+                $query.="UPDATE Ristrutturazione SET scuola='$codice',anno='$annoR',tipo='$tipoR' WHERE codice='$codR';";
+            }
+            if($infanzia1==FALSE)
+            {
+                $query.= "INSERT INTO TipoOspitato VALUES('$codice','1');";
                 
             }
-            
-            
-            if($elementare1==FALSE && $elementare == TRUE )
-            {
-                $query1 = "INSERT INTO TipoOspitato VALUES('$codice','2')";
-                pg_query($con,$query1);
-            }
-
-            if($media1==FALSE && $media == TRUE )
-            {
-                $query1 = "INSERT INTO TipoOspitato VALUES('$codice','3')";
-                pg_query($con,$query1);
-            }
-            if($infanzia1==TRUE && $infanzia == FALSE )
-            {
-                $query1 = "DELETE FROM TipoOspitato WHERE scuola ='$codice' AND tipo_scuola='1';";
-                $query1 .= "DELETE FROM Ristrutturazione WHERE scuola = '$codice'";
-                pg_query($con,$query1);
-            }
-            
-            if($elementare1==TRUE && $elementare == FALSE )
-            {
-                $query1 = "DELETE FROM TipoOspitato WHERE scuola ='$codice' AND tipo_scuola='2'";
-                pg_query($con,$query1);
-            }
-
-            if($media1==TRUE && $media == FALSE )
-            {
-                $query1 = "DELETE FROM TipoOspitato WHERE scuola ='$codice' AND tipo_scuola='3'";
-                $queryM = "UPDATE Scuola SET nome = '$nome', indirizzo='$indirizzo', annofondazione = NULL WHERE codice = '$codice'";
-                pg_query($con,$query1);
-                pg_query($con,$queryM);
-            }
-
-            echo "<div>Modifica scuola avvenuta con successo</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
         }
-        else echo "<div>'Modifica scuola fallita</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
-        
-       
-        
+        else{
+            $check_query3="SELECT * FROM Ristrutturazione WHERE scuola = '$codice'";
+            $check_result3 = pg_query($con,$check_query3);
+            if(!$check_result3){
+                echo "Errore: ".pg_last_error($conn);
+                exit;
+            }
+            if(pg_num_rows($check_result3)>0)
+            {
+                $query .= "DELETE FROM Ristrutturazione WHERE scuola = '$codice';";
+            }
+        }
+        if($elementare1==FALSE && $elementare == TRUE )
+        {
+            $query.= "INSERT INTO TipoOspitato VALUES('$codice','2');";
+        }
 
+        if($media1==FALSE && $media == TRUE )
+        {
+            $query .= "INSERT INTO TipoOspitato VALUES('$codice','3');";
+        }
+
+        if($infanzia1==TRUE && $infanzia == FALSE )
+        {
+            $query .= "DELETE FROM TipoOspitato WHERE scuola ='$codice' AND tipo_scuola='1';";
+        }
+        
+        if($elementare1==TRUE && $elementare == FALSE )
+        {
+            $query.= "DELETE FROM TipoOspitato WHERE scuola ='$codice' AND tipo_scuola='2';";
+        }
+
+        if($media1==TRUE && $media == FALSE )
+        {
+            $query.= "DELETE FROM TipoOspitato WHERE scuola ='$codice' AND tipo_scuola='3';";
+            $query.= "UPDATE Scuola SET nome = '$nome', indirizzo='$indirizzo', annofondazione = NULL WHERE codice = '$codice';";
+        }
+
+        $query .= "UPDATE Scuola SET nome = '$nome', indirizzo='$indirizzo', annofondazione = '$anno' WHERE codice = '$codice';";
+        $result = pg_query($con, $query);
+
+        if($result==TRUE) echo "<div>Modifica scuola avvenuta con successo</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
+        else echo "<div>'Modifica scuola fallita</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
     }
 }
 edit_scuola();
