@@ -14,6 +14,7 @@ echo <<<STAMPA
 <table class="elenco">
 <tr>
 <th>Codice fiscale</th>
+<th>Nome e cognome</th>
 <th>Mansione</th>
 <th>Tipo</th>
 
@@ -23,12 +24,17 @@ while($personale = pg_fetch_assoc($query_res)){
     
     $cf = $personale["cf"];
     $mansione = $personale["mansione"];
-    $tipo = $personale["tipopersonale"];
+    $queryTipo = pg_query($con, "SELECT * FROM TipoPersonale WHERE codice='$personale[tipopersonale]'");
+	$tipo = pg_fetch_row($queryTipo);
 	
+	$queryPersona = pg_query($con, "SELECT * FROM Persona WHERE cf='$cf'");
+	$persona = pg_fetch_row($queryPersona);
+ 
     echo '<tr>';
     echo '<td>'.$cf.'</td>';
+	echo '<td>'.$persona[1].' '.$persona[2].'</td>';
     echo '<td>'.$mansione.'</td>';
-    echo '<td>'.$tipo.'</td>';
+    echo '<td>'.$tipo[1].'</td>';
     echo '<td>
     <form action="edit.php" method="get">
     <input type="hidden" name="cf" value="'.$cf.'" />
@@ -42,5 +48,9 @@ echo <<< STAMPA
 </table>
 STAMPA;
 ?>
-
+<style>
+table,td,th{
+	border: 1px solid black;
+}
+</style>
 

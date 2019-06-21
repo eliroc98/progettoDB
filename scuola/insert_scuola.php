@@ -41,7 +41,7 @@
     <tr>
         <td><a href='index_scuola.php'>Torna alla pagina index per le scuole.</td>
         <td><input type="reset" value="Cancella" style="font-size: 12px;"><input type="submit" value="Inserisci scuola" style="margin-left: 10px; font-size: 12px"></td>
-      </tr>
+    </tr>
   </table>
 </form>
 <script>
