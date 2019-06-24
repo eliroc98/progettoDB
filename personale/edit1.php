@@ -21,8 +21,8 @@ function insert(){
 		
         $query= "UPDATE Personale SET mansione='$mansione', tipoPersonale='$codTipoPersonale' WHERE cf='$cfPersona';";
         $result = pg_query($con, $query);
-        if($result==TRUE) echo "<div>Inserimento personale avvenuto con successo</div><br><a href='index.php'>Torna alla pagina index per il personale.";
-        else echo "<div>'Inserimento personale fallito</div><br><a href='index.php'>Torna alla pagina index per lil personale.";
+        if($result==TRUE) echo "<div>Modifica personale avvenuto con successo</div><br><a href='index.php'>Torna alla pagina index per il personale.";
+        else echo "<div>'Modifica personale fallito</div><br><a href='index.php'>Torna alla pagina index per lil personale.";
   
     }else{
 		echo "dfg";
