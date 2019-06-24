@@ -62,7 +62,7 @@ function edit_scuola(){
             }
         }
         else{
-            $check_query3="SELECT * FROM Ristrutturazione WHERE scuola = '$codice'";
+            $check_query3="SELECT * FROM Ristrutturazione WHERE scuola = '$codice';";
             $check_result3 = pg_query($con,$check_query3);
             if(!$check_result3){
                 echo "Errore: ".pg_last_error($conn);
@@ -105,6 +105,7 @@ function edit_scuola(){
         if($result==TRUE) echo "<div>Modifica scuola avvenuta con successo</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
         else echo "<div>'Modifica scuola fallita</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
     }
+    else echo "<div>'Modifica scuola fallita</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
 }
 edit_scuola();
 ?>

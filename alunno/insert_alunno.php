@@ -31,7 +31,11 @@ echo <<<STAMPA
     </tr>
     <tr>
         <td>Data di nascita</td>
-        <td><input type="date" name="data di nascita"  title="Inserire data di nascita" required></td>
+        <td><input type="date" name="datadinascita"  title="Inserire data di nascita" required></td>
+    </tr>
+    <tr>
+        <td>Data di iscrizione</td>
+        <td><input type="date" name="datadiiscrizione"  title="Inserire data di iscrizione" required></td>
     </tr>
     <tr>
         <td>Zona di residenza</td>
@@ -138,8 +142,23 @@ echo<<< STAMPA
         </td>
     </tr>
     <tr>
+        <td>Credenziali genitore 1</td>
+        <td>
+            <table>
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" required></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="text" name="pwdG1"  title="Inserire password genitore 1" size="50" required></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
         <td>Inserimento genitore 2</td>
-        <td><input type="checkbox" id="checkGen2" onchange="toggle('checkGen2','gen2')" />Voglio inserire anche il secondo genitore</td>
+        <td><input name ="checkgen2" value="si" type="checkbox" id="checkGen2" onchange="toggle('checkGen2','gen2')" />Voglio inserire anche il secondo genitore</td>
     </tr>
     <tr>
         <td>Genitore 2</td>
@@ -209,6 +228,21 @@ echo<<< STAMPA
                             <option value="fisso">Fisso</option>
                         </select>
                     </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Credenziali genitore 2</td>
+        <td>
+            <table>
+                <tr>
+                    <td>Username</td>
+                    <td><input class="gen2" type="text" name="usernameG2"  title="Inserire username genitore 2" size="50" disabled></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input class="gen2" type="text" name="pwdG2"  title="Inserire password genitore 2" size="50" disabled></td>
                 </tr>
             </table>
         </td>

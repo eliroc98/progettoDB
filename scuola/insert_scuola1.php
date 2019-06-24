@@ -63,6 +63,7 @@ function insert_scuola(){
         else echo "<div>'Inserimento scuola fallito</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
   
     }
+    else echo "<div>'Inserimento scuola fallito</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
 }
 insert_scuola();
 ?>
