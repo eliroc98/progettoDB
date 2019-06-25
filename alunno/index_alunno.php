@@ -68,7 +68,7 @@ while($alunno = pg_fetch_assoc($query_res)){
     echo '<td>'.$cfg2.'</td>';
     echo '<td>
     <form action="edit_alunno.php" method="get">
-    <input type="hidden" name="codice" value="'.$cf.'" />
+    <input type="hidden" name="cf" value="'.$cf.'" />
     <input type="submit" value="Modifica" />
     </form>
     </td>' ;
