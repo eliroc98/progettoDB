@@ -16,7 +16,7 @@ function tipiScuola($cod,$conn){
 }
 
 $con = connect_DB();
-$query = "SELECT * FROM Scuola";
+$query = "SELECT * FROM Scuola,ContattoS WHERE codice = scuola";
 $query_res=pg_query($con, $query);
 if(!$query_res)  {
 	echo "Errore: ".pg_last_error($con);
@@ -30,6 +30,7 @@ echo <<<STAMPA
 <th>Codice</th>
 <th>Nome</th>
 <th>Indirizzo</th>
+<th>Telefono</th>
 <th>Tipi ospitati</th>
 <th>Anno fondazione</th>
 <th>Ultima ristrutturazione</th>
@@ -40,6 +41,7 @@ while($scuola = pg_fetch_assoc($query_res)){
     $codice = $scuola["codice"];
     $nome = $scuola["nome"];
     $indirizzo = $scuola["indirizzo"];
+    $telefono = $scuola["telefono"];
     $anno = $scuola["annofondazione"];
     $ca=null;
     $ct=null;
@@ -61,6 +63,7 @@ while($scuola = pg_fetch_assoc($query_res)){
     echo '<td>'.$codice.'</td>';
     echo '<td>'.$nome.'</td>';
     echo '<td>'.$indirizzo.'</td>';
+    echo '<td>'.$telefono.'</td>';
     tipiScuola($codice,$con);
     echo '<td>'.$anno.'</td>';
     echo '<td>'.$ca.' '.$ct.'</td>';

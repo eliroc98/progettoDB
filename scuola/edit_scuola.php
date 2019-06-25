@@ -3,7 +3,7 @@ require_once("../comuni/utility.php");
 $con = connect_DB();
 
 $codice = $_GET['codice'];
-$query = "SELECT * FROM Scuola WHERE codice = '$codice'";
+$query = "SELECT * FROM Scuola,ContattoS,Telefono WHERE codice = scuola AND codice = '$codice' AND Telefono.numero = ContattoS.telefono";
 
 $result= pg_query($con,$query);
 if(!$result){
@@ -15,6 +15,8 @@ $cod = $scuola["codice"];
 $nome = $scuola["nome"];
 $indirizzo = $scuola["indirizzo"];
 $anno = $scuola["annofondazione"];
+$telefono = $scuola["telefono"];
+$tipotel = $scuola["tipo"];
 
 $query1 = "SELECT tipo_scuola AS tipo FROM TipoOspitato  WHERE scuola = '$cod' ";
 $query_res1 = pg_query($con,$query1);
@@ -61,6 +63,29 @@ echo'
         <td><input type="text" name="nome"  value="'.$nome.'" title="Inserire nome scuola" size="50" required></td>
     </tr>
     <tr>
+    <td>Contatto Scuola</td>
+    <td>
+        <table>
+            <tr>
+                <td>Numero di telefono</td>
+                <td><input value="'.$telefono.'" type ="tel" name="numero" title="Inserire numero di telefono scuola" required readonly/></td>
+            </tr>
+            <tr>
+                <td>Tipo numero di telefono</td>
+                <td>
+                    <select name="tipotel">';
+                    if($tipotel=="cellulare") echo '<option value="cellulare" selected>Cellulare</option>';
+                    else echo '<option value="cellulare">Cellulare</option>';
+                    if($tipotel=="fisso") echo '<option value="fisso" selected>Fisso</option>';
+                    else echo '<option value="fisso">Fisso</option>';
+                    echo'
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </td>
+    </tr>
+    <tr>
         <td>Indirizzo</td>
         <td><input type="text" name="indirizzo" value="'.$indirizzo.'" title="Inserire indirizzo scuola" size="50" required></td>
     </tr>
@@ -90,7 +115,7 @@ echo'
         </table>
     </tr>
     <tr>
-        <td></td>
+    <td><a href="index_scuola.php">Torna alla pagina index per le scuole.</td>
         <td><input type="submit" value="Modifica scuola" style="margin-left: 10px; font-size: 12px"></td>
       </tr>
   </table>

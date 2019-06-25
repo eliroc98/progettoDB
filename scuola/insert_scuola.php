@@ -13,6 +13,24 @@
         <td>Indirizzo</td>
         <td><input type="text" name="indirizzo"  title="Inserire indirizzo scuola" size="50" required></td>
     </tr>
+    <td>Contatto Scuola</td>
+    <td>
+        <table>
+            <tr>
+                <td>Numero di telefono</td>
+                <td><input type ="tel" name="numero" title="Inserire numero di telefono scuola" required/></td>
+            </tr>
+            <tr>
+                <td>Tipo numero di telefono</td>
+                <td>
+                    <select name="tipotel">';
+                    <option value="cellulare">Cellulare</option>;
+                    <option value="fisso">Fisso</option>;
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </td>
     <tr>
         <td>Tipi ospitati</td>
         <table>

@@ -11,6 +11,8 @@ function edit_scuola(){
         $infanzia = isset($_POST['infanzia'])?TRUE:FALSE;
         $elementare = isset($_POST['elementare'])?TRUE:FALSE;
         $media = isset($_POST['media'])?TRUE:FALSE;
+        $telefono = isset($_POST["numero"])?$_POST["numero"]:null;
+        $tipotel = isset($_POST["tipotel"])?$_POST["tipotel"]:null;
 
         $check_query2="SELECT * FROM Scuola WHERE nome = '$nome' AND indirizzo = '$indirizzo'";
         $check_result2 = pg_query($con,$check_query2);
@@ -100,6 +102,7 @@ function edit_scuola(){
         }
 
         $query .= "UPDATE Scuola SET nome = '$nome', indirizzo='$indirizzo', annofondazione = '$anno' WHERE codice = '$codice';";
+        $query .="UPDATE Telefono SET tipo='$tipotel' WHERE numero = '$telefono'";
         $result = pg_query($con, $query);
 
         if($result==TRUE) echo "<div>Modifica scuola avvenuta con successo</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";

@@ -1,12 +1,14 @@
 <?php
 require_once("../comuni/utility.php");
 function insert_scuola(){
-    if(isset($_POST['codice'])&&isset($_POST['nome'])&&isset($_POST['indirizzo'])){
+    if(isset($_POST['codice'])&&isset($_POST['nome'])&&isset($_POST['indirizzo'])&&isset($_POST['numero'])&&isset($_POST['tipotel'])){
         $con = connect_DB();
 
         $codice = $_POST['codice'];
         $nome = $_POST['nome'];
         $indirizzo = $_POST['indirizzo'];
+        $telefono = $_POST['numero'];
+        $tipotel = $_POST['tipotel'];
         $anno = isset($_POST['anno'])?$_POST['anno']:NULL;
         $infanzia = isset($_POST['infanzia'])?TRUE:FALSE;
         $elementare = isset($_POST['elementare'])?TRUE:FALSE;
@@ -58,6 +60,8 @@ function insert_scuola(){
             $query1.= "INSERT INTO TipoOspitato VALUES('$codice','3');";
         }
         $query.= "INSERT INTO Scuola VALUES('$codice','$nome','$indirizzo','$anno');";
+        $query .= "INSERT INTO Telefono VALUES('$numero','$tipotel');";
+        $query .= "INSERT INTO ContattoS VALUES('$codice','$telefono');";
         $result = pg_query($con, $query);
         if($result==TRUE) echo "<div>Inserimento scuola avvenuto con successo</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";
         else echo "<div>'Inserimento scuola fallito</div><br><a href='index_scuola.php'>Torna alla pagina index per le scuole.";

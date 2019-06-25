@@ -32,7 +32,7 @@ echo'
   <table>
     <tr>
         <td>Codice Fiscale</td>
-        <td><input value="'.$cf.'" type="text" name="cf"  title="Inserire codice fiscale" size="16" required></td>
+        <td><input value="'.$cf.'" type="text" name="cf"  title="Inserire codice fiscale" size="16" required readonly></td>
     </tr>
     <tr>
         <td>Nome</td>
@@ -178,7 +178,7 @@ STAMPA;
             <table>
                 <tr>
                     <td>Numero di telefono</td>
-                    <td><input value="'.$numeroG1.'" type ="tel" name="numeroG1" title="Inserire numero di telefono genitore 1" required/></td>
+                    <td><input value="'.$numeroG1.'" type ="tel" name="numeroG1" title="Inserire numero di telefono genitore 1" required readonly/></td>
                 </tr>
                 <tr>
                     <td>Tipo numero di telefono</td>
@@ -201,7 +201,7 @@ STAMPA;
             <table>
                 <tr>
                     <td>Username</td>
-                    <td><input value="'.$usernameG1.'" type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" required></td>
+                    <td><input value="'.$usernameG1.'" type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" required readonly></td>
                 </tr>
                 <tr>
                     <td>Password</td>
@@ -240,7 +240,7 @@ echo<<< STAMPA
         </tr>
             <tr>
                 <td>Codice Fiscale</td>
-                <td><input class="gen2" type="text" name="cfG2"  title="Inserire codice fiscale genitore 2" size="50" disabled></td>
+                <td><input class="gen2" type="text" name="cfG2"  title="Inserire codice fiscale genitore 2" size="50" disabled readonly></td>
             </tr>
             <tr>
                 <td>Nome</td>
@@ -273,7 +273,7 @@ echo<<< STAMPA
             <table class="gen2">
                 <tr>
                     <td>Numero di telefono</td>
-                    <td><input class="gen2" type="tel" name="numeroG2" title="Inserire numero di telefono genitore 2" disabled /></td>
+                    <td><input class="gen2" type="tel" name="numeroG2" title="Inserire numero di telefono genitore 2" disabled readonly/></td>
                 </tr>
                 <tr>
                     <td>Tipo numero di telefono</td>
@@ -293,7 +293,7 @@ echo<<< STAMPA
             <table>
                 <tr>
                     <td>Username</td>
-                    <td><input class="gen2" type="text" name="usernameG2"  title="Inserire username genitore 2" size="50" disabled></td>
+                    <td><input class="gen2" type="text" name="usernameG2"  title="Inserire username genitore 2" size="50" disabled readonly></td>
                 </tr>
                 <tr>
                     <td>Password</td>
