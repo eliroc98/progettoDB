@@ -2,9 +2,9 @@
 require_once("../comuni/utility.php");
 
 $con = connect_DB();
-$query = "CREATE OR REPLACE VIEW vista1 AS SELECT PA.cf as cf, PA.nome as nome, PA.cognome as cognome, A.indirizzo as indirizzo, A.datadinascita as datadinascita, A.zonaresidenza as zonaresidenza, A.pre as pre, A.post as post,F.classe, GP1.nome as nomeG1, GP1.cognome as cognomeG1, GP1.cf as cfG1 FROM Persona as PA, Alunno as A, Persona as GP1, Referente as R1, Frequentazione as F WHERE PA.cf = A.cf AND GP1.cf = R1.genitore AND A.cf = R1.alunno AND  F.alunno = A.cf;";
+$query = "CREATE OR REPLACE VIEW vista1 AS SELECT PA.cf as cf, PA.nome as nome, PA.cognome as cognome, A.indirizzo as indirizzo, A.datadinascita as datadinascita, A.zonaresidenza as zonaresidenza, A.pre as pre, A.post as post,F.classe, GP1.nome as nomeG1, GP1.cognome as cognomeG1, GP1.cf as cfG1 FROM Persona as PA, Alunno as A, Persona as GP1, Referente as R1, Frequentazione as F,ContattoG as Co WHERE PA.cf = A.cf AND GP1.cf = R1.genitore AND A.cf = R1.alunno AND  F.alunno = A.cf AND GP1.cf = Co.genitore;";
 $query.="CREATE OR REPLACE VIEW vista2 AS SELECT G.cf, P.nome, P.cognome, alunno FROM Genitore as G, Referente, Persona as P WHERE G.cf=P.cf AND G.cf = genitore;";
-$query.= "SELECT vista1.cf as cf, vista1.nome as nome, vista1.cognome as cognome, vista1.indirizzo as indirizzo, vista1.datadinascita as datadinascita, vista1.zonaresidenza as zonaresidenza, vista1.pre as pre, vista1.post as post, vista1.classe as classe, vista1.nomeg1 as nomegenitore1, vista1.cognomeg1 as cognomegenitore1, vista1.cfg1 as cfgenitore1, vista2.nome as nomegenitore2, vista2.cognome as cognomegenitore2, vista2.cf as cfgenitore2 FROM vista1 left JOIN vista2 ON vista1.cfg1 != vista2.cf AND vista1.cf = vista2.alunno;"; 
+$query.= "SELECT vista1.cf as cf, vista1.nome as nome, vista1.cognome as cognome, vista1.indirizzo as indirizzo, vista1.datadinascita as datadinascita, vista1.zonaresidenza as zonaresidenza, vista1.pre as pre, vista1.post as post, vista1.classe as classe, vista1.nomeg1 as nomegenitore1, vista1.cognomeg1 as cognomegenitore1, vista1.cfg1 as cfgenitore1, vista2.nome as nomegenitore2, vista2.cognome as cognomegenitore2, vista2.cf as cfgenitore2 FROM vista1 left JOIN vista2 ON vista1.cfg1 != vista2.cf AND vista1.cf = vista2.alunno"; 
 $query_res=pg_query($con, $query);
 if(!$query_res)  {
 	echo "Errore: ".pg_last_error($con);

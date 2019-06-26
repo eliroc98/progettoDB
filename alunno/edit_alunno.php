@@ -7,7 +7,6 @@ $con = connect_DB();
 $cfGET = $_GET['cf'];
 
 $queryAlunno = "SELECT * FROM Alunno as A, Persona as P, Frequentazione WHERE A.cf = '$cfGET' AND P.cf='$cfGET' AND A.cf = P.cf AND A.cf = alunno AND P.cf = alunno;";
-//DA QUIIIIIIII
 $queryGenitoreA = "CREATE OR REPLACE VIEW vistagen AS SELECT P.cf as cf,P.nome as nome, P.cognome as cognome,G.professione as professione, G.titolo as titolo FROM Genitore as G, Persona as P, Referente as R WHERE R.alunno = '$cfGET' AND P.cf = G.cf AND R.genitore = P.cf AND R.genitore = G.cf ;";
 $queryGenitoreA.="CREATE OR REPLACE VIEW vistagen1 AS SELECT * FROM vistagen LEFT JOIN (SELECT numero, tipo, genitore FROM ContattoG, Telefono WHERE ContattoG.telefono = Telefono.numero) A ON vistagen.cf = A.genitore;";
 $queryGenitoreA .= "SELECT cf, nome, cognome, professione, titolo, numero, tipo, nomeutente, password FROM vistagen1 LEFT JOIN Credenziali ON cf = Credenziali.genitore;"; 
@@ -107,7 +106,7 @@ echo<<< STAMPA
         ></td>
     </tr>
 STAMPA;
-
+$genstampato =true;
 while($genitore=pg_fetch_assoc($queryGenitoreA_res)){
     $cfG1 = $genitore["cf"];
     $nomeG1 = $genitore["nome"];
@@ -120,6 +119,7 @@ while($genitore=pg_fetch_assoc($queryGenitoreA_res)){
     $passwordG1 = $genitore["password"];
     echo $numeroG1;
     if($numeroG1!=null){
+        $genstampato=true;
     echo'
     <tr>
         <td>Genitore 1</td>
@@ -216,193 +216,10 @@ while($genitore=pg_fetch_assoc($queryGenitoreA_res)){
             </table>
         </td>
     </tr>';
-echo<<<STAMPA
-    <tr>
-        <td>Inserimento genitore 2</td>
-        <td><input name ="checkgen2" value="si" type="checkbox" id="checkGen2" onchange="toggle('checkGen2','gen2')" />Voglio inserire anche il secondo genitore</td>
-    </tr>
-    <tr>
-        <td>Genitore 2</td>
-        <td>
-            <table class="gen2">
-            <tr>
-            <td>Genitore gia esistente</td>
-            <td>
-                <select name="selG2" class="gen2" disabled>
-                <option value="no">NO</option>
-STAMPA;
-$queryGenitore = "SELECT * FROM Genitore; ";
-$queryGenitore_res = pg_query($con,$queryGenitore);
-if(!$queryGenitore_res){
-    echo "Errore: ".pg_last_error($conn);
-    exit; 
-}
-while($genitore = pg_fetch_assoc($queryGenitore_res)){
-    $g = $genitore["cf"];
-        echo '<option value="'.$g.'"';
-        if($g==$cfG1) echo 'selected';
-        echo'>'.$g.'</option>';
-}
-echo<<< STAMPA
-                </select>
-            </td>
-        </tr>
-            <tr>
-                <td>Codice Fiscale</td>
-                <td><input class="gen2" type="text" name="cfG2"  title="Inserire codice fiscale genitore 2" size="50" disabled readonly></td>
-            </tr>
-            <tr>
-                <td>Nome</td>
-                <td><input class="gen2" type="text" name="nomeG2"  title="Inserire nome genitore 2" size="50" disabled></td>
-            </tr>
-            <tr>
-                <td>Cognome</td>
-                <td><input class="gen2" type="text" name="cognomeG2"  title="Inserire cognome genitore 2" size="50" disabled></td>
-            </tr>
-            <tr>
-                <td>Professione</td>
-                <td><input class="gen2" type="text" name="professioneG2"  title="Inserire professione genitore 2" size="50" disabled ></td>
-            </tr>
-            <tr>
-                <td>Titolo</td>
-                <td>
-                    <select class="gen2" name="titoloG2" disabled>
-                        <option value="Padre">Padre</option>
-                        <option value="Madre">Madre</option>
-                        <option value="Altro">Altro</option>
-                    </select>
-                </td>
-            </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>Contatto Genitore 2</td>
-        <td>
-            <table class="gen2">
-                <tr>
-                    <td>Numero di telefono</td>
-                    <td><input class="gen2" type="tel" name="numeroG2" title="Inserire numero di telefono genitore 2" disabled readonly/></td>
-                </tr>
-                <tr>
-                    <td>Tipo numero di telefono</td>
-                    <td>
-                        <select class="gen2" name="tipotelG2" disabled>
-                            <option value="cellulare">Cellulare</option>
-                            <option value="fisso">Fisso</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>Credenziali genitore 2</td>
-        <td>
-            <table>
-                <tr>
-                    <td>Username</td>
-                    <td><input class="gen2" type="text" name="usernameG2"  title="Inserire username genitore 2" size="50" disabled readonly></td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td><input class="gen2" type="text" name="pwdG2"  title="Inserire password genitore 2" size="50" disabled></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-STAMPA;
     }
     else{
+        $genstampato=false;
 echo<<< STAMPA
-<tr>
-<td>Genitore 1</td>
-<td>
-    <table>
-    <tr>
-        <td>Genitore gia esistente</td>
-        <td>
-            <select name="selG1">
-            <option value="no">NO</option>
-STAMPA;
-$queryGenitore = "SELECT * FROM Genitore; ";
-$queryGenitore_res = pg_query($con,$queryGenitore);
-if(!$queryGenitore_res){
-echo "Errore: ".pg_last_error($conn);
-exit; 
-}
-while($genitore = pg_fetch_assoc($queryGenitore_res)){
-echo '<option value="'.$genitore["cf"].'">'.$genitore["cf"].'</option>';
-}
-echo<<< STAMPA
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>Codice Fiscale</td>
-        <td><input type="text" name="cfG1"  title="Inserire codice fiscale genitore 1" size="50" ></td>
-    </tr>
-    <tr>
-        <td>Nome</td>
-        <td><input type="text" name="nomeG1"  title="Inserire nome genitore 1" size="50" ></td>
-    </tr>
-    <tr>
-        <td>Cognome</td>
-        <td><input type="text" name="cognomeG1"  title="Inserire cognome genitore 1" size="50" ></td>
-    </tr>
-    <tr>
-        <td>Professione</td>
-        <td><input type="text" name="professioneG1"  title="Inserire professione genitore 1" size="50" ></td>
-    </tr>
-    <tr>
-        <td>Titolo</td>
-        <td>
-            <select name="titoloG1">
-                <option value="Padre">Padre</option>
-                <option value="Madre">Madre</option>
-                <option value="Altro">Altro</option>
-            </select>
-        </td>
-    </tr>
-    </table>
-</td>
-</tr>
-<tr>
-<td>Contatto Genitore 1</td>
-<td>
-    <table>
-        <tr>
-            <td>Numero di telefono</td>
-            <td><input type="tel" name="numeroG1" title="Inserire numero di telefono genitore 1" /></td>
-        </tr>
-        <tr>
-            <td>Tipo numero di telefono</td>
-            <td>
-                <select name="tipotelG1">
-                    <option value="cellulare">Cellulare</option>
-                    <option value="fisso">Fisso</option>
-                </select>
-            </td>
-        </tr>
-    </table>
-</td>
-</tr>
-<tr>
-<td>Credenziali genitore 1</td>
-<td>
-    <table>
-        <tr>
-            <td>Username</td>
-            <td><input type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" ></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="text" name="pwdG1"  title="Inserire password genitore 1" size="50" ></td>
-        </tr>
-    </table>
-</td>
-</tr>
-<tr>
         <tr>
             <td>Inserimento genitore 2</td>
             <td><input name ="checkgen2" value="si" type="checkbox" id="checkGen2" onchange="toggle('checkGen2','gen2')" checked/>Voglio inserire anche il secondo genitore</td>
@@ -513,6 +330,192 @@ echo<<<STAMPA
         </tr>
 STAMPA;
     }
+}
+if($genstampato){
+echo<<<STAMPA
+<tr>
+        <td>Inserimento genitore 2</td>
+        <td><input name ="checkgen2" value="si" type="checkbox" id="checkGen2" onchange="toggle('checkGen2','gen2')" />Voglio inserire anche il secondo genitore</td>
+    </tr>
+    <tr>
+        <td>Genitore 2</td>
+        <td>
+            <table class="gen2">
+            <tr>
+            <td>Genitore gia esistente</td>
+            <td>
+                <select name="selG2" class="gen2" disabled>
+                <option value="no">NO</option>
+STAMPA;
+$queryGenitore = "SELECT * FROM Genitore; ";
+$queryGenitore_res = pg_query($con,$queryGenitore);
+if(!$queryGenitore_res){
+    echo "Errore: ".pg_last_error($conn);
+    exit; 
+}
+while($genitore = pg_fetch_assoc($queryGenitore_res)){
+    echo '<option value="'.$genitore["cf"].'">'.$genitore["cf"].'</option>';
+}
+echo<<< STAMPA
+                </select>
+            </td>
+        </tr>
+            <tr>
+                <td>Codice Fiscale</td>
+                <td><input class="gen2" type="text" name="cfG2"  title="Inserire codice fiscale genitore 2" size="50" disabled></td>
+            </tr>
+            <tr>
+                <td>Nome</td>
+                <td><input class="gen2" type="text" name="nomeG2"  title="Inserire nome genitore 2" size="50" disabled></td>
+            </tr>
+            <tr>
+                <td>Cognome</td>
+                <td><input class="gen2" type="text" name="cognomeG2"  title="Inserire cognome genitore 2" size="50" disabled></td>
+            </tr>
+            <tr>
+                <td>Professione</td>
+                <td><input class="gen2" type="text" name="professioneG2"  title="Inserire professione genitore 2" size="50" disabled ></td>
+            </tr>
+            <tr>
+                <td>Titolo</td>
+                <td>
+                    <select class="gen2" name="titoloG2" disabled>
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Altro">Altro</option>
+                    </select>
+                </td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Contatto Genitore 2</td>
+        <td>
+            <table class="gen2">
+                <tr>
+                    <td>Numero di telefono</td>
+                    <td><input class="gen2" type="tel" name="numeroG2" title="Inserire numero di telefono genitore 2" disabled /></td>
+                </tr>
+                <tr>
+                    <td>Tipo numero di telefono</td>
+                    <td>
+                        <select class="gen2" name="tipotelG2" disabled>
+                            <option value="cellulare">Cellulare</option>
+                            <option value="fisso">Fisso</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Credenziali genitore 2</td>
+        <td>
+            <table>
+                <tr>
+                    <td>Username</td>
+                    <td><input class="gen2" type="text" name="usernameG2"  title="Inserire username genitore 2" size="50" disabled></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input class="gen2" type="text" name="pwdG2"  title="Inserire password genitore 2" size="50" disabled></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+STAMPA;
+}
+else{
+echo<<< STAMPA
+<tr>
+        <td>Genitore 1</td>
+        <td>
+            <table>
+            <tr>
+                <td>Genitore gia esistente</td>
+                <td>
+                    <select name="selG1">
+                    <option value="no">NO</option>
+STAMPA;
+$queryGenitore = "SELECT * FROM Genitore; ";
+    $queryGenitore_res = pg_query($con,$queryGenitore);
+    if(!$queryGenitore_res){
+        echo "Errore: ".pg_last_error($conn);
+        exit; 
+    }
+    while($genitore = pg_fetch_assoc($queryGenitore_res)){
+        echo '<option value="'.$genitore["cf"].'">'.$genitore["cf"].'</option>';
+    }
+echo<<< STAMPA
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Codice Fiscale</td>
+                <td><input type="text" name="cfG1"  title="Inserire codice fiscale genitore 1" size="50" ></td>
+            </tr>
+            <tr>
+                <td>Nome</td>
+                <td><input type="text" name="nomeG1"  title="Inserire nome genitore 1" size="50" ></td>
+            </tr>
+            <tr>
+                <td>Cognome</td>
+                <td><input type="text" name="cognomeG1"  title="Inserire cognome genitore 1" size="50" ></td>
+            </tr>
+            <tr>
+                <td>Professione</td>
+                <td><input type="text" name="professioneG1"  title="Inserire professione genitore 1" size="50" ></td>
+            </tr>
+            <tr>
+                <td>Titolo</td>
+                <td>
+                    <select name="titoloG1">
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Altro">Altro</option>
+                    </select>
+                </td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Contatto Genitore 1</td>
+        <td>
+            <table>
+                <tr>
+                    <td>Numero di telefono</td>
+                    <td><input type="tel" name="numeroG1" title="Inserire numero di telefono genitore 1" /></td>
+                </tr>
+                <tr>
+                    <td>Tipo numero di telefono</td>
+                    <td>
+                        <select name="tipotelG1">
+                            <option value="cellulare">Cellulare</option>
+                            <option value="fisso">Fisso</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Credenziali genitore 1</td>
+        <td>
+            <table>
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" ></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="text" name="pwdG1"  title="Inserire password genitore 1" size="50" ></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+STAMPA;
 }
 echo<<< STAMPA
     <tr>
