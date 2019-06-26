@@ -77,7 +77,7 @@ function insert_alunno(){
                 $query.="INSERT INTO Persona VALUES('$cfG2','$nomeG2','$cognomeG2');";
                 $query.="INSERT INTO Genitore VALUES('$cfG2','$professioneG2','$titoloG2');";
 
-                if($numeroG1!=NULL&&$tipotelG2!=NULL){
+                if($numeroG2!=NULL&&$tipotelG2!=NULL){
                     $query.="INSERT INTO Telefono VALUES('$numeroG2','$tipotelG2');";
                     $query.="INSERT INTO ContattoG VALUES('$cfG2','$numeroG2');";
                 }

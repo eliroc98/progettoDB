@@ -4,7 +4,6 @@ function edit_alunno(){
     if(isset($_POST['cf'])){
         $con = connect_DB();
         $query='';
-
         $cf=$_POST['cf'];
         $nome =isset($_POST['nome'])?$_POST['nome']:NULL;
         $cognome =isset($_POST['cognome'])?$_POST['cognome']:NULL;
@@ -16,7 +15,6 @@ function edit_alunno(){
         $inizio = isset($_POST['datadiiscrizione'])?$_POST['datadiiscrizione']:NULL;
         $pre =isset($_POST['pre'])?$_POST['pre']:NULL;
         $post =isset($_POST['post'])?$_POST['post']:NULL;
-
         $check_alunno = "SELECT * FROM Alunno WHERE cf = '$cf';";
         $check_alunno_res = pg_query($con,$check_alunno);
         if(!$check_alunno_res){
@@ -26,13 +24,20 @@ function edit_alunno(){
 
         $query .= "UPDATE Persona SET nome = '$nome', cognome = '$cognome' WHERE cf = '$cf';";
         $query .= "UPDATE Alunno SET indirizzo = '$indirizzo', datadinascita = '$datadinascita',zonaresidenza = '$zona', pre = null, post = null WHERE cf = '$cf'; ";
-        $query_frequentazione = "SELECT * FROM Frequentazione WHERE cf = '$cf' ORDER BY DESC inizio LIMIT 1;";
+        $query_frequentazione = "SELECT * FROM Frequentazione WHERE alunno = '$cf' ORDER BY inizio DESC LIMIT 1;";
         $query_frequentazione_res = pg_query($con, $query_frequentazione);
         if(pg_num_rows($query_frequentazione_res)>0){
-            $ini = $query_frequentazione_res["inizio"];
-            $query .= "UPDATE Frequentazione SET fine = CURRENT_DATE WHERE cf = '$cf' AND inizio = '$ini' ;";
+            $x = pg_fetch_assoc($query_frequentazione_res);
+            if($x["classe"]!=$scuola){
+                $ini = $x["inizio"];
+                $query .= "UPDATE Frequentazione SET fine = CURRENT_DATE WHERE alunno = '$cf' AND inizio = '$ini' ;";
+            }
+            
         }
-        $query .= "INSERT INTO Frequentazione VALUES('$scuola','$cf','$inizio',null);";
+        else{
+            $query .= "INSERT INTO Frequentazione VALUES('$scuola','$cf','$inizio',null);";
+        }
+        
 
         $queryTipo = "SELECT * FROM Classe WHERE codice = '$scuola';";
         $queryTipo_res = pg_query($con,$queryTipo);
@@ -49,6 +54,7 @@ function edit_alunno(){
         }
 
         $gen1 =isset($_POST['selG1'])?$_POST['selG1']:NULL;
+        if ($gen1==NULL) echo 'gen1 null';
         $cfG1 =isset($_POST['cfG1'])?$_POST['cfG1']:NULL;
         $nomeG1 =isset($_POST['nomeG1'])?$_POST['nomeG1']:NULL;
         $cognomeG1 =isset($_POST['cognomeG1'])?$_POST['cognomeG1']:NULL;
@@ -80,8 +86,9 @@ function edit_alunno(){
                     echo "Errore: ".pg_last_error($con)."<br><a href='index_alunno.php'>Torna alla pagina index per gli alunni.";
                     exit;
                 }
-                $query .= " DELETE FROM ContattoG WHERE telefono ='$queryTel_res["numero"]'; ";
-                $query .= " DELETE FROM Telefono WHERE numero ='$queryTel_res["numero"]'; ";
+                $num= $queryTel_res["numero"];
+                $query .= "DELETE FROM ContattoG WHERE telefono ='$num';";
+                $query .= "DELETE FROM Telefono WHERE numero ='$num';";
                 $query.="INSERT INTO Telefono VALUES('$numeroG1','$tipotelG1');";
                 $query.="INSERT INTO ContattoG VALUES('$cfG1','$numeroG1');";
                 $queryCred = "SELECT nomeutente FROM Credenziali as C WHERE C.genitore = '$cfG1';";
@@ -90,14 +97,16 @@ function edit_alunno(){
                     echo "Errore: ".pg_last_error($con)."<br><a href='index_alunno.php'>Torna alla pagina index per gli alunni.";
                     exit;
                 }
-                $query .= " DELETE FROM Credenziali WHERE nomeutente ='$queryTel_res["nomeutente"]'; ";
+                $ut = $queryCred_res["nomeutente"];
+                $query .= " DELETE FROM Credenziali WHERE nomeutente ='$ut'; ";
                 $query.="INSERT INTO Credenziali VALUES('$usernameG1','$passwordG1','$cfG1');";
             }
             else{
                 $queryGen = "SELECT * FROM Referente as R, Genitore as G, ContattoG as C WHERE R.genitore = G.cf AND C.genitore = G.cf AND R.genitore = C.genitore AND R.alunno = '$cf'; ";
                 $queryGen_res = pg_query($con, $queryGen);
                 if(pg_num_rows($queryGen_res)>0){
-                    $query .= "UPDATE Referente SET genitore = '$gen1' WHERE genitore='$queryGen_res["genitore"]' AND alunno ='$cf';";
+                    $gg=$queryGen_res["genitore"];
+                    $query .= "UPDATE Referente SET genitore = '$gen1' WHERE genitore='$gg' AND alunno ='$cf';";
                 }
             }
             
@@ -140,8 +149,9 @@ function edit_alunno(){
                             echo "Errore: ".pg_last_error($con)."<br><a href='index_alunno.php'>Torna alla pagina index per gli alunni.";
                             exit;
                         }
-                        $query .= " DELETE FROM ContattoG WHERE telefono ='$queryTel_res["numero"]'; ";
-                        $query .= " DELETE FROM Telefono WHERE numero ='$queryTel_res["numero"]'; ";
+                        $num=$queryTel_res["numero"];
+                        $query .= " DELETE FROM ContattoG WHERE telefono ='$num'; ";
+                        $query .= " DELETE FROM Telefono WHERE numero ='$num'; ";
                         $query.="INSERT INTO Telefono VALUES('$numeroG1','$tipotelG1');";
                         $query.="INSERT INTO ContattoG VALUES('$cfG1','$numeroG1');";
                     }
@@ -152,7 +162,8 @@ function edit_alunno(){
                             echo "Errore: ".pg_last_error($con)."<br><a href='index_alunno.php'>Torna alla pagina index per gli alunni.";
                             exit;
                         }
-                        $query .= " DELETE FROM Credenziali WHERE nomeutente ='$queryTel_res["nomeutente"]'; ";
+                        $ut = $queryCred_res["nomeutente"];
+                        $query .= " DELETE FROM Credenziali WHERE nomeutente ='$ut'; ";
                         $query.="INSERT INTO Credenziali VALUES('$usernameG1','$passwordG1','$cfG1');";
                     }
                     
@@ -161,7 +172,8 @@ function edit_alunno(){
                     $queryGen = "SELECT genitore as cfG FROM Referente WHERE alunno = '$cf' EXCEPT SELECT R.genitore as cfG FROM Referente as R, Genitore as G, ContattoG as C WHERE R.genitore = G.cf AND C.genitore = G.cf AND R.genitore = C.genitore AND R.alunno = '$cf'; ";
                     $queryGen_res = pg_query($con, $queryGen);
                     if(pg_num_rows($queryGen_res)>0){
-                        $query .= "UPDATE Referente SET genitore = '$gen2' WHERE genitore='$queryGen_res["cfG"] AND alunno ='$cf';";
+                        $gg=$queryGen_res["cfG"];
+                        $query .= "UPDATE Referente SET genitore = '$gen2' WHERE genitore='$gg' AND alunno ='$cf';";
                     }
                 }
             }

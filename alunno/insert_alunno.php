@@ -94,19 +94,19 @@ echo<<< STAMPA
             </tr>
             <tr>
                 <td>Codice Fiscale</td>
-                <td><input type="text" name="cfG1"  title="Inserire codice fiscale genitore 1" size="50" required></td>
+                <td><input type="text" name="cfG1"  title="Inserire codice fiscale genitore 1" size="50" ></td>
             </tr>
             <tr>
                 <td>Nome</td>
-                <td><input type="text" name="nomeG1"  title="Inserire nome genitore 1" size="50" required></td>
+                <td><input type="text" name="nomeG1"  title="Inserire nome genitore 1" size="50" ></td>
             </tr>
             <tr>
                 <td>Cognome</td>
-                <td><input type="text" name="cognomeG1"  title="Inserire cognome genitore 1" size="50" required></td>
+                <td><input type="text" name="cognomeG1"  title="Inserire cognome genitore 1" size="50" ></td>
             </tr>
             <tr>
                 <td>Professione</td>
-                <td><input type="text" name="professioneG1"  title="Inserire professione genitore 1" size="50" required></td>
+                <td><input type="text" name="professioneG1"  title="Inserire professione genitore 1" size="50" ></td>
             </tr>
             <tr>
                 <td>Titolo</td>
@@ -127,7 +127,7 @@ echo<<< STAMPA
             <table>
                 <tr>
                     <td>Numero di telefono</td>
-                    <td><input type="tel" name="numeroG1" title="Inserire numero di telefono genitore 1" required/></td>
+                    <td><input type="tel" name="numeroG1" title="Inserire numero di telefono genitore 1" /></td>
                 </tr>
                 <tr>
                     <td>Tipo numero di telefono</td>
@@ -147,11 +147,11 @@ echo<<< STAMPA
             <table>
                 <tr>
                     <td>Username</td>
-                    <td><input type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" required></td>
+                    <td><input type="text" name="usernameG1"  title="Inserire username genitore 1" size="50" ></td>
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input type="text" name="pwdG1"  title="Inserire password genitore 1" size="50" required></td>
+                    <td><input type="text" name="pwdG1"  title="Inserire password genitore 1" size="50" ></td>
                 </tr>
             </table>
         </td>
