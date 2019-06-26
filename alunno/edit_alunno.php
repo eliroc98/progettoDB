@@ -106,7 +106,8 @@ echo<<< STAMPA
         ></td>
     </tr>
 STAMPA;
-$genstampato =true;
+$gen1stampato =false;
+$gen2stampato=false;
 while($genitore=pg_fetch_assoc($queryGenitoreA_res)){
     $cfG1 = $genitore["cf"];
     $nomeG1 = $genitore["nome"];
@@ -119,7 +120,7 @@ while($genitore=pg_fetch_assoc($queryGenitoreA_res)){
     $passwordG1 = $genitore["password"];
     echo $numeroG1;
     if($numeroG1!=null){
-        $genstampato=true;
+        $gen1stampato=true;
     echo'
     <tr>
         <td>Genitore 1</td>
@@ -218,7 +219,7 @@ while($genitore=pg_fetch_assoc($queryGenitoreA_res)){
     </tr>';
     }
     else{
-        $genstampato=false;
+        $gen2stampato=true;
 echo<<< STAMPA
         <tr>
             <td>Inserimento genitore 2</td>
@@ -331,7 +332,7 @@ echo<<<STAMPA
 STAMPA;
     }
 }
-if($genstampato){
+if(!$gen2stampato){
 echo<<<STAMPA
 <tr>
         <td>Inserimento genitore 2</td>
@@ -426,7 +427,7 @@ echo<<< STAMPA
     </tr>
 STAMPA;
 }
-else{
+if(!$gen1stampato){
 echo<<< STAMPA
 <tr>
         <td>Genitore 1</td>
