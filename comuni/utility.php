@@ -1,4 +1,8 @@
 <?php
+function checksession(){
+    if(isset($_SESSION["username"])) return true;
+    else return false;
+}
 /* creo connessione al DB*/
 function connect_DB() {
 $con = pg_connect("host=localhost port=5432 dbname=progetto user=postgres password=unimi");

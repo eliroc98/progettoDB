@@ -17,6 +17,13 @@ if($tuple){
     $_SESSION["cf"] = $tuple["cf"];
     $_SESSION["nome"] = $tuple["nome"];
     $_SESSION["cognome"] = $tuple["cognome"];
+    $queryFiglio = "SELECT alunno FROM Referente as R WHERE R.genitore = '$usr';";
+    $queryFiglio_res = pg_query($con,$queryFiglio);
+    if(!$queryFiglio_res){
+        echo 'Errore: '.pg_last_error($con);
+        exit;
+    }
+    $_SESSION["figlio"] = pg_fetch_assoc($queryFiglio_res)["alunno"]; 
 }
-header("location:index.php");
+header("location:index_registro.php");
 ?>

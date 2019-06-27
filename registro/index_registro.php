@@ -1,3 +1,9 @@
+<?php
+require_once("../comuni/utility.php");
+session_start();
+$_SESSION['stampa']='';
+if(!checksession()){
+echo<<<STAMPA
 <html>
     <header></header>
     <body>
@@ -23,3 +29,53 @@
     </form>
     </body>
 </html>
+STAMPA;
+}
+else{
+
+echo '<body onload="votiFiglio()"><select name="figlio" id ="selFiglio" onchange="chgFiglio()">';
+    $con = connect_DB();
+    $usr = $_SESSION["cf"];
+    $query = "SELECT alunno FROM Referente as R WHERE R.genitore = '$usr';";
+    $query_res = pg_query($con,$query);
+    if(!$query_res){
+        echo 'Errore: '.pg_last_error($con);
+        exit;
+    }
+    while($figlio = pg_fetch_assoc($query_res)["alunno"]){
+        echo '<option value="'.$figlio.'">'.$figlio.'</option>';
+    }
+    echo '</select>';
+echo<<<STAMPA
+<form action="logout.php" method="POST"><input type="submit" value="Logout"/></form>
+<table>
+    <tr>
+        <th>Materia</th>
+        <th>Data</th>
+        <th>Voto</th>
+        <th>Tipo prova</th>
+    </tr>
+STAMPA;
+echo $_SESSION['stampa'];
+
+echo<<<STAMPA
+</table>
+</body>
+<script src="http://code.jquery.com/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script>
+function votiFiglio(){
+    var chk = document.getElementById("selFiglio");
+    var chkdValue = chk.options[chk.selectedIndex].value;
+    $.get("/progetto/registro/set_alunno.php",{"figlio":chkdValue});
+}
+function chgFiglio(){
+    var chk = document.getElementById("selFiglio");
+    var chkdValue = chk.options[e.selectedIndex].value;
+    $.get("/progetto/registro/set_alunno.php",{"figlio":chkdValue});
+
+}
+</script>
+STAMPA;
+}
+
+?>
