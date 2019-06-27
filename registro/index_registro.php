@@ -1,7 +1,6 @@
 <?php
 require_once("../comuni/utility.php");
 session_start();
-$_SESSION['stampa']='';
 if(!checksession()){
 echo<<<STAMPA
 <html>
@@ -33,7 +32,31 @@ STAMPA;
 }
 else{
 
-echo '<body onload="votiFiglio()"><select name="figlio" id ="selFiglio" onchange="chgFiglio()">';
+echo '
+<script src="http://code.jquery.com/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script>
+function votiFiglio(){
+    var chk = document.getElementById("selFiglio");
+    var chkdValue = chk.options[chk.selectedIndex].value;
+    $.get("/progetto/registro/set_alunno.php",{"figlio":chkdValue});
+
+}
+function chgFiglio(){
+    var chk = document.getElementById("selFiglio");
+    var chkdValue = chk.options[chk.selectedIndex].value;
+    $.ajax({
+        type: "GET",
+        url: "/progetto/registro/set_alunno.php",
+        datatype: "html",
+        data: {"figlio":chkdValue},
+        success: function(data) {
+            $(\'#tbl tbody\').html(data);
+          }
+      });
+
+}
+</script>
+<body onload="votiFiglio()"><select name="figlio" id ="selFiglio" onchange="chgFiglio()">';
     $con = connect_DB();
     $usr = $_SESSION["cf"];
     $query = "SELECT alunno FROM Referente as R WHERE R.genitore = '$usr';";
@@ -48,33 +71,20 @@ echo '<body onload="votiFiglio()"><select name="figlio" id ="selFiglio" onchange
     echo '</select>';
 echo<<<STAMPA
 <form action="logout.php" method="POST"><input type="submit" value="Logout"/></form>
-<table>
-    <tr>
-        <th>Materia</th>
-        <th>Data</th>
-        <th>Voto</th>
-        <th>Tipo prova</th>
-    </tr>
-STAMPA;
-echo $_SESSION['stampa'];
-
-echo<<<STAMPA
+<table id ="tbl">
+    <thead>
+        <tr>
+            <th>Materia</th>
+            <th>Data</th>
+            <th>Voto</th>
+            <th>Tipo prova</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
 </body>
-<script src="http://code.jquery.com/jquery-1.6.4.min.js" type="text/javascript"></script>
-<script>
-function votiFiglio(){
-    var chk = document.getElementById("selFiglio");
-    var chkdValue = chk.options[chk.selectedIndex].value;
-    $.get("/progetto/registro/set_alunno.php",{"figlio":chkdValue});
-}
-function chgFiglio(){
-    var chk = document.getElementById("selFiglio");
-    var chkdValue = chk.options[e.selectedIndex].value;
-    $.get("/progetto/registro/set_alunno.php",{"figlio":chkdValue});
 
-}
-</script>
 STAMPA;
 }
 
