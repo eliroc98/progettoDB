@@ -1,6 +1,7 @@
 <?php
     require_once("../comuni/utility.php");
     $con = connect_DB();
+    $current = date("M")
     $query = "SELECT S.supplente FROM Supplenza as S, Personale as P WHERE S.supplente = P.cf AND EXTRACT(YEAR FROM S.datainizio) IN (2018, 2019);";
     $query_res = pg_query($con, $query);
     if(!$query_res){

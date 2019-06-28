@@ -26,5 +26,5 @@ if($tuple){
     $_SESSION["figlio"] = pg_fetch_assoc($queryFiglio_res)["alunno"]; 
     $_SESSION['stampa']='';
 }
-header("location:index_registro.php");
+header("location:index.php");
 ?>

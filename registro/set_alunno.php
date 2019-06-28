@@ -15,5 +15,4 @@ while($voto = pg_fetch_assoc($queryVoto_res)){
     $_SESSION['stampa'] .= '<tr><td>'.$mat.'</td><td>'.$d.'</td><td>'.$v.'</td><td>'.$t.'</td></tr>';
 }
 echo $_SESSION['stampa'];
-//header("location: index_registro.php");
 ?>
