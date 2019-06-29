@@ -1,6 +1,6 @@
 <?php
 require_once("../comuni/utility.php");
-
+require_once("../comuni/header.php");
 $con = connect_DB();
 $query = "CREATE OR REPLACE VIEW vista1 AS SELECT PA.cf as cf, PA.nome as nome, PA.cognome as cognome, A.indirizzo as indirizzo, A.datadinascita as datadinascita, A.zonaresidenza as zonaresidenza, A.pre as pre, A.post as post,F.classe, GP1.nome as nomeG1, GP1.cognome as cognomeG1, GP1.cf as cfG1 FROM Persona as PA, Alunno as A, Persona as GP1, Referente as R1, Frequentazione as F,ContattoG as Co WHERE PA.cf = A.cf AND GP1.cf = R1.genitore AND A.cf = R1.alunno AND  F.alunno = A.cf AND GP1.cf = Co.genitore;";
 $query.="CREATE OR REPLACE VIEW vista2 AS SELECT G.cf, P.nome, P.cognome, alunno FROM Genitore as G, Referente, Persona as P WHERE G.cf=P.cf AND G.cf = genitore;";
@@ -32,8 +32,10 @@ echo <<<STAMPA
 <th>cf genitore 2</th>
 </tr>
 STAMPA;
+$pari=true;
 while($alunno = pg_fetch_assoc($query_res)){
-    
+    if ($pari) $color="row0";
+	else $color="row1";
     $cf = $alunno["cf"];
     $nome = $alunno["nome"];
     $cognome = $alunno["cognome"];
@@ -50,29 +52,30 @@ while($alunno = pg_fetch_assoc($query_res)){
     $cognomeg2 = $alunno["cognomegenitore2"];
     $cfg2 = $alunno["cfgenitore2"];
 
-    echo '<tr>';
-    echo '<td>'.$cf.'</td>';
-    echo '<td>'.$nome.'</td>';
-    echo '<td>'.$cognome.'</td>';
-    echo '<td>'.$indirizzo.'</td>';
-    echo '<td>'.$datadinascita.'</td>';
-    echo '<td>'.$zonaresidenza.'</td>';
-    echo '<td>'.$pre.'</td>';
-    echo '<td>'.$post.'</td>';
-    echo '<td>'.$classe.'</td>';
-    echo '<td>'.$nomeg1.'</td>';
-    echo '<td>'.$cognomeg1.'</td>';
-    echo '<td>'.$cfg1.'</td>';
-    echo '<td>'.$nomeg2.'</td>';
-    echo '<td>'.$cognomeg2.'</td>';
-    echo '<td>'.$cfg2.'</td>';
-    echo '<td>
+    echo '<tr class="'.$color.'">';
+    echo '<td class="'.$color.'">'.$cf.'</td>';
+    echo '<td class="'.$color.'">'.$nome.'</td>';
+    echo '<td class="'.$color.'">'.$cognome.'</td>';
+    echo '<td class="'.$color.'">'.$indirizzo.'</td>';
+    echo '<td class="'.$color.'">'.$datadinascita.'</td>';
+    echo '<td class="'.$color.'">'.$zonaresidenza.'</td>';
+    echo '<td class="'.$color.'">'.$pre.'</td>';
+    echo '<td class="'.$color.'">'.$post.'</td>';
+    echo '<td class="'.$color.'">'.$classe.'</td>';
+    echo '<td class="'.$color.'">'.$nomeg1.'</td>';
+    echo '<td class="'.$color.'">'.$cognomeg1.'</td>';
+    echo '<td class="'.$color.'">'.$cfg1.'</td>';
+    echo '<td class="'.$color.'">'.$nomeg2.'</td>';
+    echo '<td class="'.$color.'">'.$cognomeg2.'</td>';
+    echo '<td class="'.$color.'">'.$cfg2.'</td>';
+    echo '<td class="'.$color.'">
     <form action="edit.php" method="get">
     <input type="hidden" name="cf" value="'.$cf.'" />
     <input type="submit" value="Modifica" />
     </form>
     </td>' ;
     echo '</tr>';
+    $pari=!$pari;
 }
 echo <<< STAMPA
 <tr><td><a href="insert.php">Inserisci un nuovo alunno</td></tr>

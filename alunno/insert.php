@@ -1,7 +1,7 @@
 <?php
 
 require_once("../comuni/utility.php");
-
+require_once("../comuni/header.php");
 $con = connect_DB();
 
 $queryScuole = "SELECT * FROM Scuola;";

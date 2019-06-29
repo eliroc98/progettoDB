@@ -1,4 +1,4 @@
-
+<?php require_once("../comuni/header.php");?>
 <form action="insert1.php" method="POST">
   <table>
     <tr>
@@ -13,8 +13,9 @@
         <td>Indirizzo</td>
         <td><input type="text" name="indirizzo"  title="Inserire indirizzo scuola" size="50" required></td>
     </tr>
-    <td>Contatto Scuola</td>
-    <td>
+    <tr>
+    <tr><td>Contatto Scuola</td></tr>
+    <tr>
         <table>
             <tr>
                 <td>Numero di telefono</td>
@@ -31,6 +32,7 @@
             </tr>
         </table>
     </td>
+    </tr>
     <tr>
         <td>Tipi ospitati</td>
         <table>

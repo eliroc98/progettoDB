@@ -1,18 +1,18 @@
 <?php
 require_once("../comuni/utility.php");
-
-function tipiScuola($cod,$conn){
+require_once("../comuni/header.php");
+function tipiScuola($cod,$conn,$color){
     $query1 = "SELECT ts.tipo AS tipo FROM TipoScuola AS ts,TipoOspitato AS too WHERE too.tipo_scuola = ts.codice AND scuola = '$cod' ";
     $query_res1 = pg_query($conn,$query1);
     if(!$query_res1){
         echo "Errore: ".pg_last_error($conn);
         exit;
     }
-    echo '<td><table>';
+    echo '<td>';
     while ($tipo = pg_fetch_assoc($query_res1)){
-        echo '<tr><td>'.$tipo["tipo"].'</td></tr>';
+        echo '<tr class="'.$color.'"><td>'.$tipo["tipo"].'</td></tr>';
     }
-    echo '</table></td>';
+    echo '</td>';
 }
 
 $con = connect_DB();
@@ -36,8 +36,10 @@ echo <<<STAMPA
 <th>Ultima ristrutturazione</th>
 </tr>
 STAMPA;
+$pari=true;
 while($scuola = pg_fetch_assoc($query_res)){
-    
+    if ($pari) $color="row0";
+	else $color="row1";
     $codice = $scuola["codice"];
     $nome = $scuola["nome"];
     $indirizzo = $scuola["indirizzo"];
@@ -59,21 +61,22 @@ while($scuola = pg_fetch_assoc($query_res)){
         $ct=$ristrutturazione["tipo"];
     }
 
-    echo '<tr>';
-    echo '<td>'.$codice.'</td>';
-    echo '<td>'.$nome.'</td>';
-    echo '<td>'.$indirizzo.'</td>';
-    echo '<td>'.$telefono.'</td>';
-    tipiScuola($codice,$con);
-    echo '<td>'.$anno.'</td>';
-    echo '<td>'.$ca.' '.$ct.'</td>';
-    echo '<td>
+    echo '<tr class="'.$color.'">';
+    echo '<td class="'.$color.'">'.$codice.'</td>';
+    echo '<td class="'.$color.'">'.$nome.'</td>';
+    echo '<td class="'.$color.'">'.$indirizzo.'</td>';
+    echo '<td class="'.$color.'">'.$telefono.'</td>';
+    tipiScuola($codice,$con, $color);
+    echo '<td class="'.$color.'">'.$anno.'</td>';
+    echo '<td class="'.$color.'">'.$ca.' '.$ct.'</td>';
+    echo '<td class="'.$color.'">
     <form action="edit.php" method="get">
     <input type="hidden" name="codice" value="'.$codice.'" />
     <input type="submit" value="Modifica" />
     </form>
     </td>' ;
     echo '</tr>';
+    $pari=!$pari;
 }
 echo <<< STAMPA
 <tr><td><a href="insert.php">Inserisci una nuova scuola</td></tr>

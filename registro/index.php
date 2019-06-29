@@ -1,33 +1,10 @@
 <?php
 require_once("../comuni/utility.php");
-session_start();
+require_once("../comuni/header.php");
 if(!checksession()){
 echo<<<STAMPA
-<html>
-    <header></header>
-    <body>
-    <form action="login.php" method="POST">
-        <table>
-            <th>Registro voti</th>
-            <tr>    
-                <td>Inserire le credenziali</td>
-            </tr>
-            <tr>    
-                <td>Username</td>
-                <td><input type="text" name ="nomeutente" title="Inserire lo username" size="50"/></td>
-            </tr>
-            <tr>    
-                <td>Password</td>
-                <td><input type="password" name ="pwd" title="Inserire la password" size="50"/></td>
-            </tr>
-            <tr>    
-                <td><input type="reset" value="Cancella"/></td>
-                <td><input type="submit" value="Login"/></td>
-            </tr>
-        </table>
-    </form>
-    </body>
-</html>
+<div>Per accedere al registro, occorre fare il login.
+</div>
 STAMPA;
 }
 else{
@@ -53,6 +30,9 @@ function chgFiglio(){
             $(\'#tbl tbody\').html(data);
           }
       });
+      $("tr:even").css("class", "row0");
+      $("tr:odd").css("class", "row1");
+    
 
 }
 </script>
@@ -70,7 +50,6 @@ function chgFiglio(){
     }
     echo '</select>';
 echo<<<STAMPA
-<form action="logout.php" method="POST"><input type="submit" value="Logout"/></form>
 <table id ="tbl">
     <thead>
         <tr>

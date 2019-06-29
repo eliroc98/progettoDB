@@ -1,4 +1,4 @@
 <?php
 require_once("comuni/utility.php");
-connect_DB();
+require_once("comuni/header.php");
 ?>

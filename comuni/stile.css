@@ -1,0 +1,28 @@
+.row0 {
+    border: 1px solid #e0e0e0; 
+}
+
+.row1 {
+    border: 1px solid #e0e0e0; 
+    background-color: #D1E3E9;
+}
+html{
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+#menu{
+    background-color: #B2D9E5;
+}
+
+h3,h4,th{
+    border:2px solid #93BAC6;
+}
+h1{
+    border:2px solid #93BAC6;
+    background-color: #B2D9E5;
+}
+#login{
+    border:2px solid #e0e0e0;
+}
+#trLog{
+    border:0px ;
+}
