@@ -22,7 +22,7 @@ echo<<<STAMPA
 <html>
 <head>
 <title>Gestione Istituti scolastici</title>
-<link rel="stylesheet" type="text/css" href="http://127.0.0.1/progetto/comuni/stile.css"/>
+<link rel="stylesheet" type="text/css" href="../comuni/stile.css"/>
 </head>
 
 <body>
