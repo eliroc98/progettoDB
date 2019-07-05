@@ -12,7 +12,7 @@ if(!$query_res)  {
 
 echo <<<STAMPA
 <h3>Personale</h3>
-<div><a href="http://127.0.0.1/progetto/insegnanti_supplenti/index.php">Informazioni su insegnanti supplenti</a></div>
+<div><a href="/insegnanti_supplenti/index.php">Informazioni su insegnanti supplenti</a></div>
 <table class="elenco">
 <tr>
 <th>Codice fiscale</th>

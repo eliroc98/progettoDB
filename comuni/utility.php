@@ -22,12 +22,12 @@ echo<<<STAMPA
 <html>
 <head>
 <title>Gestione Istituti scolastici</title>
-<link rel="stylesheet" type="text/css" href="../comuni/stile.css"/>
+<link rel="stylesheet" type="text/css" href="/Progetto/comuni/stile.css"/>
 </head>
 
 <body>
 <div class="banner">
-<h1><a href="index.php" title="Torna all'homepage">Gestione istituti scolastici</a></h1>
+<h1><a href="/Progetto/index.php" title="Torna all'homepage">Gestione istituti scolastici</a></h1>
 STAMPA;
 
 echo '</div>';
@@ -36,15 +36,16 @@ echo '</div>';
 function print_menu(){
 echo <<<STAMPA
 <div id="menu">
- <a href="http://127.0.0.1/progetto/index.php">Homepage</a>
-| <a href="http://127.0.0.1/progetto/scuola/index.php">Scuole</a>
-| <a href="http://127.0.0.1/progetto/alunno/index.php">Alunni</a>
-| <a href="http://127.0.0.1/progetto/personale/index.php">Personale</a>
-| <a href="http://127.0.0.1/progetto/registro/index.php">Registro</a>
+ <a href="/Progetto/">Homepage</a>
+| <a href="/Progetto/scuola/">Scuole</a>
+| <a href="/Progetto/alunno/">Alunni</a>
+| <a href="/Progetto/personale/">Personale</a>
+| <a href="/Progetto/registro/">Registro</a>
+| <a href="/Progetto/verifica/">Verifica</a>
 STAMPA;
 if(checksession()){
 echo' | Benvenuto '.$_SESSION["username"].'!
-    | <a href="../registro/logout.php">Logout</a>';
+    | <a href="/Progetto/registro/logout.php">Logout</a>';
 }
 echo '</div>';
 if(!checksession()){
@@ -55,7 +56,7 @@ if(!checksession()){
 function print_form_login(){
 echo<<<STAMPA
 <div>
-    <form action="http://127.0.0.1/progetto/registro/login.php" method="POST">
+    <form action="/registro/login.php" method="POST">
         <table id="login">
         <th id="trLog">Login</th>
             <tr>    

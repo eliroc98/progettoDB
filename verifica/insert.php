@@ -1,11 +1,6 @@
-<head>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</head>
 <?php
 require_once("../comuni/utility.php");
-
+require_once("../comuni/header.php");
 $con = connect_DB();
 
 
@@ -16,33 +11,13 @@ if(!$query_resS)  {
 	exit;
 }
 
-$queryC = "SELECT * FROM Classe";
-$query_resC=pg_query($con, $queryC);
-if(!$query_resC)  {
-	echo "Errore: ".pg_last_error($con);
-	exit;
-}
-
-$queryM = "SELECT * FROM Materia";
-$query_resM=pg_query($con, $queryM);
-if(!$query_resM)  {
-	echo "Errore: ".pg_last_error($con);
-	exit;
-}
-
-$queryA = "SELECT * FROM Alunno"; 
-$query_resA=pg_query($con, $queryA);
-if(!$query_resA)  {
-	echo "Errore: ".pg_last_error($con);
-	exit;
-}
 
 echo '<h1>Inserimento voti</h1>
-<form action="insert1.php" method="POST" onsubmit="return validateForm();">
+<form action="insert1.php" method="POST">
   <table>
   	<tr>
 		<td>Scuola</td>
-		<td><select name="codScuola" id="selectScuola" required>
+		<td><select name="scuola" id="selectScuola" required>
 			<option value="">Scegli una scuola</option>';
 			while($scuola = pg_fetch_assoc($query_resS)){
 			   echo '<option value="'.$scuola['codice'].'">'.$scuola['nome'].' ,'.$scuola['indirizzo'].'</option>';
@@ -51,31 +26,31 @@ echo '<h1>Inserimento voti</h1>
 	<tr>
 	<tr>
 		<td>Classe</td>
-		<td><select name="codClasse" id="selectClasse" required disabled>
+		<td><select name="classe" id="selectClasse" required disabled>
 				<option value="">Scegli una classe</option>
 			</select></td>
 	</tr>
 	<tr>
 		<td>Materia</td>
-		<td><select name="nomeMateria" id="selectMateria" required disabled>
+		<td><select name="materia" id="selectMateria" required disabled>
 				<option value="">Scegli una materia</option>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>Alunno</td>
-		<td><select name="cf" id="selectAlunno" required disabled>
+		<td><select name="alunno" id="selectAlunno" required disabled>
 				<option value="">Scegli un alunno</option>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>Voto</td>
-		<td><input type="number" step="0.5" min="0" max="10" name="voto" id="selectVoto" class="datepicker" title="Inserire data prova" required disabled></td>
+		<td><input type="number" step="0.5" min="0" max="10" name="voto" id="voto" title="Inserire data prova" required disabled></td>
 	</tr>
 	<tr>
 		<td>Tipo prova</td>
-		<td><select name="tipoProva" id="selectProva" required disabled>
+		<td><select name="tipo_prova" id="selectProva" required disabled>
 				<option value="">Scegli un tipo</option>
 				<option value="Scritto">Scritto</option>
 				<option value="Orale">Orale</option>
@@ -98,12 +73,17 @@ table,td,th{
 }
 </style>
 <script>
+var d =new Date();
+var currentYear = d.getFullYear();
+var currentMonth= d.getMonth();
+var schoolYear = ((currentMonth > 8) ? currentYear+":"+(currentYear+1) : (currentYear-1)+":"+currentYear);
 
  $( document ).ready(function() {
     $(".datepicker" ).datepicker({
         changeMonth: true,
 		showButtonPanel: true,
 		dateFormat: 'yy-mm-dd',
+		yearRange: schoolYear,
         changeYear: true
     });
 	$(".datepicker" ).attr("autocomplete", "off");
@@ -162,17 +142,17 @@ $('#selectAlunno').on('change', function (e) {
 	var optionSelected = $("option:selected", this);
     var valueSelected = this.value;
 	if (valueSelected==""){
-		$('#selectVoto').prop("disabled", true); 
+		$('#voto').prop("disabled", true);
+		$('#selectProva').prop("disabled", true); 		
+		
 	}
 	else{
-		$('#selectVoto').prop("disabled", false); 
+		$('#voto').prop("disabled", false);
+		$('#selectProva').prop("disabled", false);
 	}
 });
 
 
-function validateForm()
-{
-}
 </script>
 
   

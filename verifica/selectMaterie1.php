@@ -10,7 +10,7 @@ function selectMateria(){
         $result = pg_query($con, $query);
 		$array=array();
 		while($materie= pg_fetch_assoc($result)){
-			$key=$materie['materia']." ".$materie['personale'] ;
+			$key=$materie['materia'];
 			$value=$materie['materia'];
 			$array[$key] = $value;
 		}
