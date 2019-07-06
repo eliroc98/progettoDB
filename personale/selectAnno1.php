@@ -15,7 +15,7 @@ function selectAnno(){
 		echo json_encode($array);
   
     }else{
-		return false;
+		echo false;
 	}
 }
 selectAnno();

@@ -146,8 +146,9 @@ $('#selectMateria').on('change', function (e) {
 $('#selectAlunno').on('change', function (e) {
 	var optionSelected = $("option:selected", this);
     var valueSelected = this.value;
+	var materia=$("#selectMateria").val();
 	
-	$.get('selectProve1.php', { alunno: valueSelected }, function(data){
+	$.get('selectProve1.php', { alunno: valueSelected, materia: materia }, function(data){
 		prove = JSON.parse(data);
 		$('#selectVoti').prop("disabled", false);
 		$("#selectVoti").empty();
