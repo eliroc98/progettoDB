@@ -28,7 +28,7 @@ function insert(){
 		echo "<div>Inserimento voto fallito</div><br><a href='index.php'>Torna alla pagina index per i voti.";
   
     }else{
-		echo "Errore, dati mancanti <a href='index.php'>Torna alla pagina index per il personale.</a>";
+		echo "Errore, dati mancanti <a href='index.php'>Torna alla pagina index per i voti.</a>";
 	}
 }
 insert();

@@ -6,6 +6,9 @@
     border: 1px solid #e0e0e0; 
     background-color: #D1E3E9;
 }
+table, td, th, tr{
+	border: 1px solid #e0e0e0; 
+}
 html{
     font-family: "Comic Sans MS", cursive, sans-serif;
 }

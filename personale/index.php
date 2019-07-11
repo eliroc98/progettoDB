@@ -78,13 +78,15 @@ echo '
 	</tr>
 </table>
 <table class="elenco" id="tabFilter">
+<thead>
 <tr>
 <th>Codice fiscale</th>
 <th>Nome e cognome</th>
 <th>Mansione</th>
 <th>Tipo</th>
 </tr>
-
+</thead>
+<tbody></tbody>
 </table>
 ';
 ?>
@@ -110,8 +112,9 @@ function cerca(){
 	var anno = $('#selectAnno').val();
 	$.get('selectPersonale1.php', { scuola: scuola, anno:anno }, function(data){
 		var personale = JSON.parse(data);
+		$("#tabFilter > tbody").empty();
 		$.each( personale, function( i, row ) {
-			$('#tabFilter').append('<tr ><td>'+row["cf"]+'</td><td>'+row["nome"] + " " + row["cognome"]+'</td><td>'+row["mansione"]+'</td><td>'+row["tipo"]+'</td></tr>');
+			$('#tabFilter tbody').append('<tr ><td>'+row["cf"]+'</td><td>'+row["nome"] + " " + row["cognome"]+'</td><td>'+row["mansione"]+'</td><td>'+row["tipo"]+'</td></tr>');
 		});
 	});		
 }

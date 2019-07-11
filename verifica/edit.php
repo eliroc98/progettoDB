@@ -65,6 +65,7 @@ echo '<h1>Modifica voti</h1>
 	<tr>
 		<td>Data prova</td>
 		<td><input type="text" name="data" id="data" class="datepicker prova" title="Inserire data prova" required ></td>
+		<input type="hidden" name="vecchiaData" id="vecchiaData">
 	</tr>
 	<tr>
 		<td><input type="reset" value="Cancella" style="font-size: 12px;"><input type="submit" value="Inserisci voto" style="margin-left: 10px; font-size: 12px"></td>
@@ -168,6 +169,7 @@ $('#selectVoti').on('change', function (e) {
 		$('.prova').prop("disabled", false);
 		$('#voto').val(values[0]);
 		$('#data').val(values[1]);
+		$('#vecchiaData').val(values[1]);
 		$("#selectProva").val(values[2]).change();
 	}
 	else{

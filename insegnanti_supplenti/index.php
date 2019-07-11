@@ -54,4 +54,30 @@ $pari=true;
         $pari=!$pari;
     }
 echo '</table>';
+
+
+
+$queryNumSupp1 = "SELECT S.supplente, COUNT(*) as numsupplenze FROM Supplenza as S, Personale as P WHERE S.supplente = P.cf AND EXTRACT(YEAR FROM S.datainizio) IN ($aa1, $aa2) GROUP BY S.supplente;";
+$queryNumSupp_res1 = pg_query($con, $queryNumSupp1);
+    if(!$queryNumSupp_res1){
+        echo 'Errore: '.pg_last_error($con);
+        exit;
+    }
+echo<<< STAMPA
+    <table>
+        <th>Supplente</th>
+STAMPA;
+$pari=true;
+    while($supp1 = pg_fetch_assoc($queryNumSupp_res1)){
+        if ($pari) $color="row0";
+        else $color="row1";
+        if($supp1["numsupplenze"]<=2){
+            echo '<tr class="'.$color.'"><td class="'.$color.'">';
+            echo $supp1["supplente"];
+            echo '</td></tr>';
+        }
+        $pari=!$pari;
+    }
+echo '</table>';
+
 ?>
