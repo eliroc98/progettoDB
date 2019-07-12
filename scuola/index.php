@@ -10,7 +10,7 @@ function tipiScuola($cod,$conn,$color){
     }
     echo '<td>';
     while ($tipo = pg_fetch_assoc($query_res1)){
-        echo '<tr class="'.$color.'"><td>'.$tipo["tipo"].'</td></tr>';
+        echo $tipo["tipo"].'<br>';
     }
     echo '</td>';
 }
