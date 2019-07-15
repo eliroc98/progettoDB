@@ -56,7 +56,7 @@ if(!checksession()){
 function print_form_login(){
 echo<<<STAMPA
 <div>
-    <form action="/registro/login.php" method="POST">
+    <form action="/Progetto/registro/login.php" method="POST">
         <table id="login">
         <th id="trLog">Login</th>
             <tr>    
