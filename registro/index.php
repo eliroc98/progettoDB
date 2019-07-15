@@ -12,19 +12,39 @@ else{
 echo '
 <script>
 function votiFiglio(){
-    var chk = document.getElementById("selFiglio");
-    var chkdValue = chk.options[chk.selectedIndex].value;
-    $.get("/progetto/registro/set_alunno.php",{"figlio":chkdValue});
-
-}
-function chgFiglio(){
-    var chk = document.getElementById("selFiglio");
-    var chkdValue = chk.options[chk.selectedIndex].value;
+    var chk = document.getElementById("selFiglio");   
+    var chkdValue = chk.options[chk.selectedIndex].value; 
+    $.ajax({
+        type: "GET",
+        url: "/progetto/registro/get_anno.php",
+        datatype: "html",
+        data: {"figlio":chkdValue},
+        success: function(data) {
+            $(\'#selAnno\').html(data);
+          }
+      });
     $.ajax({
         type: "GET",
         url: "/progetto/registro/set_alunno.php",
         datatype: "html",
-        data: {"figlio":chkdValue},
+        data: {"figlio":chkdValue,"anno":"no"},
+        success: function(data) {
+            $(\'#tbl tbody\').html(data);
+          }
+      });
+ 
+
+}
+function chg(){
+    var chk = document.getElementById("selFiglio");
+    var chkdValue = chk.options[chk.selectedIndex].value;
+    var chkAnno = document.getElementById("selAnno");
+    var chkdValueAnno = chkAnno.options[chkAnno.selectedIndex].value;
+    $.ajax({
+        type: "GET",
+        url: "/progetto/registro/set_alunno.php",
+        datatype: "html",
+        data: {"figlio":chkdValue, "anno":chkdValueAnno},
         success: function(data) {
             $(\'#tbl tbody\').html(data);
           }
@@ -35,7 +55,7 @@ function chgFiglio(){
 
 }
 </script>
-<body onload="votiFiglio()"><select name="figlio" id ="selFiglio" onchange="chgFiglio()">';
+<body onload="votiFiglio()"><select name="figlio" id ="selFiglio" onchange="chg()">';
     $con = connect_DB();
     $usr = $_SESSION["cf"];
     $query = "SELECT alunno FROM Referente as R WHERE R.genitore = '$usr';";
@@ -45,8 +65,10 @@ function chgFiglio(){
         exit;
     }
     while($figlio = pg_fetch_assoc($query_res)["alunno"]){
-        echo '<option value="'.$figlio.'">'.$figlio.'</option>';
+        echo '<option>'.$figlio.'</option>';
     }
+    echo '</select>
+    <select name="anno" id ="selAnno" onchange="chg()">';
     echo '</select>';
 echo<<<STAMPA
 <table id ="tbl">
